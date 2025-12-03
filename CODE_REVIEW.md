@@ -66,8 +66,12 @@ if (-not $context) {
 param(
     [Parameter(Mandatory=$false)]
     [ValidateScript({
-        if ($_ -match '[\[\]*?<>|"]') {
+        $invalidChars = [System.IO.Path]::GetInvalidPathChars()
+        if ($_.IndexOfAny($invalidChars) -ge 0) {
             throw "Path contains invalid characters"
+        }
+        if ($_ -match '\.\.') {
+            throw "Path traversal detected"
         }
         $true
     })]

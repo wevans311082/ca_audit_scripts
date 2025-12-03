@@ -124,8 +124,8 @@ param(
     [Parameter(Mandatory=$false)]
     [ValidateScript({
         # Check for invalid path characters
-        $invalidChars = [System.IO.Path]::GetInvalidPathChars() + @('*', '?', '<', '>', '|')
-        if (($_ -split '' | Where-Object { $invalidChars -contains $_ }).Count -gt 0) {
+        $invalidChars = [System.IO.Path]::GetInvalidPathChars()
+        if ($_.IndexOfAny($invalidChars) -ge 0) {
             throw "Path contains invalid characters"
         }
         # Check path length (Windows MAX_PATH = 260)

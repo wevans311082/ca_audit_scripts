@@ -181,7 +181,7 @@ Contributions are welcome! Please:
 
 For issues, questions, or contributions:
 - GitHub Issues: Report bugs or request features
-- Email: Wayne.Evans@ISHelp.co.uk
+- Contact: See repository for current maintainer information
 
 ## License
 

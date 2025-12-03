@@ -39,15 +39,10 @@ Connect-SPOService -Url "https://$($PrimaryDomain.Split('.')[0])-admin.sharepoin
 **Mitigation:**
 ```powershell
 # Validate domain format before use
-if ($PrimaryDomain -match '^([\w-]+)\.[\w-]+\.[\w]+$') {
+if ($PrimaryDomain -match '^([\w-]+)\.\w+\.\w+$') {
     $tenantName = $Matches[1]
-    # Additional validation: only alphanumeric and hyphens
-    if ($tenantName -match '^[\w-]+$') {
-        $spoUrl = "https://$tenantName-admin.sharepoint.com"
-        Connect-SPOService -Url $spoUrl -ErrorAction Stop
-    } else {
-        Write-Error "Invalid tenant name format: $tenantName"
-    }
+    $spoUrl = "https://$tenantName-admin.sharepoint.com"
+    Connect-SPOService -Url $spoUrl -ErrorAction Stop
 } else {
     Write-Error "Invalid domain format: $PrimaryDomain"
 }
@@ -94,7 +89,7 @@ param(
         }
         # Validate against invalid characters
         $invalidChars = [System.IO.Path]::GetInvalidPathChars()
-        if (($_ -split '' | Where-Object { $invalidChars -contains $_ }).Count -gt 0) {
+        if ($_.IndexOfAny($invalidChars) -ge 0) {
             throw "Path contains invalid characters"
         }
         # Ensure path is not in sensitive system directories
