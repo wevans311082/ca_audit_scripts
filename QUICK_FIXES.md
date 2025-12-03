@@ -128,9 +128,10 @@ param(
         if ($_.IndexOfAny($invalidChars) -ge 0) {
             throw "Path contains invalid characters"
         }
-        # Check path length (Windows MAX_PATH = 260)
+        # Check path length (Windows MAX_PATH = 260, using 200 for safety margin)
+        # Reserve 60 characters for filename/timestamp/subfolder structure
         if ($_.Length -gt 200) {
-            throw "Path is too long (maximum 200 characters)"
+            throw "Path is too long (maximum 200 characters to allow for output files)"
         }
         $true
     })]
